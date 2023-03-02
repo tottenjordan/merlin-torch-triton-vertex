@@ -1,0 +1,25 @@
+
+FROM nvcr.io/nvidia/tritonserver:23.01-py3 
+# AS triton
+# FROM nvcr.io/nvidia/merlin/merlin-pytorch:22.12
+
+EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8002
+
+WORKDIR /src
+
+# Copies the serving code to the docker image.
+COPY serving/* serving/ 
+
+RUN pip3 install -U pip
+RUN pip3 install -r serving/requirements.txt
+# RUN pip3 install google-cloud-aiplatform
+# RUN pip3 install transformers
+# RUN pip3 install transformers4rec[pytorch,nvtabular,dataloader]
+RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-sdk -y
+
+COPY serving/entrypoint.sh ./
+RUN chmod +x entrypoint.sh
+
+ENTRYPOINT ["./entrypoint.sh"]

@@ -1,0 +1,57 @@
+name: "ensemble_model"
+platform: "ensemble"
+input {
+  name: "age_days-list"
+  data_type: TYPE_FP32
+  dims: -1
+  dims: -1
+}
+input {
+  name: "weekday_sin-list"
+  data_type: TYPE_FP32
+  dims: -1
+  dims: -1
+}
+input {
+  name: "item_id-list"
+  data_type: TYPE_INT64
+  dims: -1
+  dims: -1
+}
+input {
+  name: "category-list"
+  data_type: TYPE_INT64
+  dims: -1
+  dims: -1
+}
+output {
+  name: "next-item"
+  data_type: TYPE_FP32
+  dims: -1
+}
+ensemble_scheduling {
+  step {
+    model_name: "0_predictpytorchtriton"
+    model_version: -1
+    input_map {
+      key: "age_days-list"
+      value: "age_days-list"
+    }
+    input_map {
+      key: "category-list"
+      value: "category-list"
+    }
+    input_map {
+      key: "item_id-list"
+      value: "item_id-list"
+    }
+    input_map {
+      key: "weekday_sin-list"
+      value: "weekday_sin-list"
+    }
+    output_map {
+      key: "next-item"
+      value: "next-item"
+    }
+  }
+}

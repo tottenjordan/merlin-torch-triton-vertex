@@ -1,0 +1,38 @@
+name: "0_predictpytorchtriton"
+platform: "pytorch_libtorch"
+input {
+  name: "age_days-list"
+  data_type: TYPE_FP32
+  dims: -1
+  dims: -1
+}
+input {
+  name: "weekday_sin-list"
+  data_type: TYPE_FP32
+  dims: -1
+  dims: -1
+}
+input {
+  name: "item_id-list"
+  data_type: TYPE_INT64
+  dims: -1
+  dims: -1
+}
+input {
+  name: "category-list"
+  data_type: TYPE_INT64
+  dims: -1
+  dims: -1
+}
+output {
+  name: "next-item"
+  data_type: TYPE_FP32
+  dims: -1
+}
+parameters {
+  key: "INFERENCE_MODE"
+  value {
+    string_value: "true"
+  }
+}
+backend: "pytorch"
